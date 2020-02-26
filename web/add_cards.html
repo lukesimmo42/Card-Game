@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Add cards</title>
+        <script src="/static/common.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.js"></script>
+        <script src="/static/add_cards.js"></script>
+        <link rel="stylesheet" href="/static/add_cards.css">
+    </head>
+    <body>
+        <div>
+        <img id=show src="">
+        <div id="drop-area">
+          <form class="my-form">
+            <p>Upload a file with the file dialog or by dragging and dropping images onto the dashed region</p>
+            <input type="file" id="fileElem" accept="image/*" onchange="handleFile(this.files[0])">
+            <label class="button" for="fileElem">Select a file</label>
+          </form>
+        </div>
+        <form id="frm1">
+          name: <input type="text" name="name"><br>
+          ap: <input type="number" min="0" step="1"name="ap"><br>
+          dp: <input type="number" min="0" step="1" name="dp"><br>
+          text: <input type="text" name="text"><br>
+          code: <input type="text" name="code"><br>
+          id: <input type="number" min="0" step="1" name="id"><br>
+          <input type="button" onClick="process(this.form)" value="Submit">
+        </form>
+    
+    
+        <script>
+            var img
+            var pig
+            function process (form) {
+              var name = form.name.value
+              var type = "monster"
+              var ap = form.ap.value
+              if (!ap) {
+                ap = 0
+              }
+              var dp = form.dp.value
+              if (!dp) {
+                dp = 0
+              }
+              var text = form.text.value
+              var code = form.code.value
+              var id = form.id.value
+              if (!id && id !== 0) {
+                id = "no id"
+              }
+              socket.emit("insert card", id, name, type, ap, dp, text, code, img)
+            }
+            
+            socket.on('message', function(text){
+              alert(text)
+            });
+            
+            var dropArea = document.getElementById('drop-area')
+            ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+              dropArea.addEventListener(eventName, preventDefaults, false)
+            })
+            
+            function preventDefaults (e) {
+              e.preventDefault()
+              e.stopPropagation()
+            }
+            
+            ;['dragenter', 'dragover'].forEach(eventName => {
+              dropArea.addEventListener(eventName, highlight, false)
+            })
+            
+            ;['dragleave', 'drop'].forEach(eventName => {
+              dropArea.addEventListener(eventName, unhighlight, false)
+            })
+            
+            function highlight(e) {
+              dropArea.classList.add('highlight')
+            }
+            
+            function unhighlight(e) {
+              dropArea.classList.remove('highlight')
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false)
+
+
+    
+            function handleDrop(e) {
+              var dt = e.dataTransfer
+              var file = dt.files[0]
+              handleFile(file)
+            }
+
+            function handleFile(file){
+              console.log(file)
+              var pig = window.URL.createObjectURL(file);
+              document.getElementById("show").src=pig
+              var reader = new FileReader();
+              reader.onload = function(evt){
+                  img=evt.target.result
+                  console.log(img)
+              };
+              reader.readAsDataURL(file);  
+          }
+        </script>
+        </div>
+        <div id=canvasHolder>
+          
+        </div>
+    </body>
+</html>
