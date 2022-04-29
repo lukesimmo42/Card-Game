@@ -4,7 +4,7 @@
   "main": "server.js",
   "author": "Luke Simmons",
   "dependencies": {
-    "async": "~0.2.8",
+    "async": "~2.6.4",
     "express": "~3.2.4",
     "fs": "0.0.1-security",
     "jsdom": "^15.1.1",
