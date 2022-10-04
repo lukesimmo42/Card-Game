@@ -286,7 +286,7 @@ exports.drawCard = function(card,x,y,cardWidth,cardHeight,shown,highlight){
     noFill();
     rect(x,y,cardWidth,cardHeight)
   } else {//draw card
-    if(card.img) {image(card.img,x,y,cardWidth,cardHeight)}
+    if(card.img) {image(card.img,x,y,cardWidth,cardHeight);console.log("draw img")}
     noFill();
     rect(x,y,cardWidth,cardHeight);
     fill(0,0,0);

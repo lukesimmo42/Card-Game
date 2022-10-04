@@ -3,6 +3,7 @@
 var width;
 var height;
 
+var executing = false;
 var executionQueue = [];
 var requestAmount = 0;
 var selectingBoard = false;

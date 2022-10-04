@@ -8,8 +8,8 @@ const common = require('./client/common')
   , io = require("socket.io").listen(server)
   , mysql = require("mysql")
   , fs = require("fs")
-  , util = require('util')
-  , URL = require('url').URL;
+  , util = require("util")
+  , URL = require("url").URL;
 
 app.use("/static", express.static("client"));
 app.use("/", express.static("./web"));
@@ -275,13 +275,14 @@ function newGame(player1,player2){
   
   game.loadMatch = function(){
     console.log("loadMatch");
-    /*for(var i=0; i<20; i++) {
+    for(let i=0; i<20; i++) {
       game.decklist1[i]=new common.monster(i,String.fromCharCode(97 + i),i,"deck",1,i,i+1,this)
     }
-    for(var i=0; i<20; i++) {
+    for(let i=0; i<20; i++) {
       game.decklist2[i]=new common.monster(i,String.fromCharCode(97 + i),i,"deck",2,i,i+1,this)
-    }*/
-    var self = this;
+    }
+    game.startMatch()
+    /*var self = this;
     var cardsToLoad = 0;
     cardsToLoad ++;
     connection.query("SELECT * FROM monsters WHERE id = 1;", function(err, rows, fields) {
@@ -302,7 +303,7 @@ function newGame(player1,player2){
       } else {
         console.log("Error while performing Query.");
       }
-    })
+    })*/
   };
   
   game.startMatch = function(){
@@ -351,7 +352,7 @@ function newGame(player1,player2){
         card[0].condition = "hand";
         game.hand1[game.hand1.length]=card;
         game.deck1.splice(0,1)
-        game.player1KnownCards[i] = true
+        //game.player1KnownCards[i] = true
        // return true
       }
     } else if (player === 2){
@@ -362,7 +363,7 @@ function newGame(player1,player2){
         card[0].condition = "hand";
         game.hand2[game.hand2.length]=card;
         game.deck2.splice(0,1)
-        game.player2KnownCards[i] = true
+        //game.player2KnownCards[i] = true
         //return true
       }
     }
@@ -412,7 +413,7 @@ function using(from,to,game){
   });
   if(selected === false || targets.some === false){
     console.log("one of the cards doesnt exist");
-    return(false)
+    return false
   }
   console.log("trying to use");
   console.log(selected[0].name);
